@@ -1,0 +1,188 @@
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.ArrayList;
+////////////////////////////////////////////////////////////////////////////
+public class Main {
+    public static void main(String[] args) {
+
+        int DO;
+        ArrayList<String> Task_Dates = new ArrayList<String>();
+        ArrayList<String> Task_Descriptions = new ArrayList<String>();
+        ArrayList<String> All_tasks = new ArrayList<String>();
+        HashMap<String, String> is_done = new HashMap<>();
+
+        //Declare Variables
+
+        //Scanner
+        Scanner scr_input = new Scanner(System.in);
+        String str_flush = "";
+
+        //Integers
+        int Index = 0;
+        int edit_num = 0;
+        int get_index = 0;
+
+        //Strings
+        String task_Due_Date = "";
+        String Description = "";
+        String Title = "";
+        String remove = "";
+        String mrk_done = "";
+        String Task_Edit = "";
+        String New_Edit = "";
+        String YesNo = "";
+try {
+
+    do {
+        System.out.print("\nTO - DO List");
+        System.out.print("\n1. Create new task\n2. Mark a task as done\n3. Remove task\n4. Edit task\n5. Display all tasks\n6. Exit");
+
+        //ask for input
+
+        System.out.print("\n\nWhat would you like to do: ");
+        DO = scr_input.nextInt();
+        str_flush = scr_input.nextLine();
+
+        //Output based of Choice
+
+        switch (DO) {
+
+            //Add a task
+            case 1:
+                Index = All_tasks.size();
+            System.out.print("\n-----------------------------------");
+            System.out.print("\nADD A TASK");
+            System.out.print("\n-----------------------------------");
+                System.out.print("\nOk, Give new task a name: ");
+                Title = scr_input.nextLine();
+
+                System.out.print("\nNow give your task a due date: ");
+                task_Due_Date = scr_input.nextLine();
+
+                System.out.print("\nNow give your task a description: ");
+                Description = scr_input.nextLine();
+
+                is_done.put(Title, "Not Done");
+
+
+                Tasks tasks = new Tasks(Title, task_Due_Date, Description);
+                Task_Descriptions.add(Description);
+                Task_Dates.add(task_Due_Date);
+                All_tasks.add(Title);
+                break;
+            //Mark task as done
+            case 2:
+                System.out.print("\n-----------------------------------");
+                System.out.print("\nMARK TASK AS DONE");
+                System.out.print("\n-----------------------------------\n");
+
+                for (int i = 0; i < is_done.size(); i++) {
+                    System.out.print(All_tasks.get(i) + ":  ");
+                    System.out.print(is_done.get(All_tasks.get(i)) + "\n");
+                }
+
+                System.out.print("\nEnter the name of the task you would like to mark as done: ");
+                mrk_done = scr_input.nextLine();
+                is_done.replace(mrk_done, "Done");
+                break;
+
+            //Remove a task
+            case 3:
+                System.out.print("\n-----------------------------------");
+                System.out.print("\nREMOVE TASK");
+                System.out.print("\n-----------------------------------\n");
+                for (int i = 0; i < All_tasks.size(); i++) {
+                    System.out.print(All_tasks.get(i) + "\n");
+                }
+                System.out.print("\nEnter the name of the task you would like to remove: ");
+                remove = scr_input.nextLine();
+
+                All_tasks.remove(remove);
+                break;
+        //edit a task
+            case 4:
+                System.out.print("\n-----------------------------------");
+                System.out.print("\nEDIT A TASK");
+                System.out.print("\n-----------------------------------\n");
+
+                do {
+
+                    for (int i = 0; i < All_tasks.size(); i++) {
+                        System.out.print(All_tasks.get(i) + "\n");
+                    }
+                    System.out.print("\nWhich task would you like to edit: ");
+                    Task_Edit = scr_input.nextLine();
+
+                    System.out.print("\nWhat would you like to edit? \nTitle: 1 \nDue Date: 2 \nDescription: 3 \nGo Back: 4 \nEnter a number: ");
+                    edit_num = scr_input.nextInt();
+                    str_flush = scr_input.nextLine();
+
+                    if (edit_num == 1) {
+                        System.out.print("\nWARNING: Changing a tasks Title will reset the task to 'Not Done'");
+                        System.out.print("\ngive the task a new Title: ");
+                        New_Edit = scr_input.nextLine();
+                        get_index = All_tasks.indexOf(Task_Edit);
+                        All_tasks.set(get_index, New_Edit);
+                        is_done.remove(Task_Edit);
+                        is_done.put(New_Edit, "Not Done");
+
+                    } else if (edit_num == 2) {
+                        System.out.print("\ngive the task a new Due Date: ");
+                        New_Edit = scr_input.nextLine();
+                        get_index = All_tasks.indexOf(Task_Edit);
+                        Task_Dates.set(get_index, New_Edit);
+
+                    } else if (edit_num == 3) {
+                        System.out.print("\ngive the task a new Description: ");
+                        New_Edit = scr_input.nextLine();
+                        get_index = All_tasks.indexOf(Task_Edit);
+                        Task_Descriptions.set(get_index, New_Edit);
+
+                    } else if (edit_num == 4) {
+
+                    } else {
+                        System.out.print("\nSomething went wrong\n");
+                    }
+                } while (edit_num > 4 || edit_num < 1 && edit_num != 4);
+                break;
+
+            //Display all tasks
+            case 5:
+                System.out.print("\n-----------------------------------");
+                System.out.print("\nDISPLAY ALL TASKS");
+                System.out.print("\n-----------------------------------\n");
+                for (int i = 0; i < All_tasks.size(); i++) {
+                    System.out.print(All_tasks.get(i) + ":  ");
+                    System.out.print(is_done.get(All_tasks.get(i)) + "\n");
+                }
+                do{
+                System.out.print("\nWould you like to Describe all tasks [y/n]: ");
+                YesNo = scr_input.nextLine();
+                YesNo = YesNo.toUpperCase();
+
+                if(YesNo.equals("Y")){
+                    for (int i = 0; i < All_tasks.size(); i++) {
+                        System.out.print("\n----------------------------------");
+                        System.out.print("\n" + All_tasks.get(i) + " is due " + Task_Dates.get(i) + "\nDescription: " + Task_Descriptions.get(i) + "\n");
+                        System.out.print("----------------------------------");
+                    }
+                }
+                }while(!YesNo.equals("Y") && !YesNo.equals("N"));
+
+                break;
+
+            //Exit
+            case 6:
+                System.out.print("\n\nEXITING");
+                break;
+
+        }
+    } while (DO != 6);
+
+} catch(Exception e){
+    System.out.print("Process failed, sorry");
+}
+
+
+    }
+}
