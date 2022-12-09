@@ -64,8 +64,6 @@ try {
 
                 is_done.put(Title, "Not Done");
 
-
-                Tasks tasks = new Tasks(Title, task_Due_Date, Description);
                 Task_Descriptions.add(Description);
                 Task_Dates.add(task_Due_Date);
                 All_tasks.add(Title);
